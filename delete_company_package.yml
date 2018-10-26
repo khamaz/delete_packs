@@ -1,0 +1,16 @@
+---
+- name: Delete Company Package
+  hosts: all
+  tasks:
+    - name: Delete Package from RedHat Family
+      when: ansible_os_family == "RedHat"
+      package:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - telnet
+        - bind-utils
+        - lftp
+        - elinks
+        - vsftpd
+        - httpd
