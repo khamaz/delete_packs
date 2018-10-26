@@ -1,0 +1,32 @@
+---
+- name: Delete Wordpress
+  hosts: all
+  tasks:
+    - name: Delete wordpress
+      when: ansible_os_family == "RedHat"
+      get_url:
+        url: https://wordpress.org/latest.tar.gz
+        dest: /tmp/
+
+    - name: Delete webserver  Debian
+      when: ansible_os_family == "Debian"
+      package:
+        name: apache2
+        state: absent
+
+    - name: Delete webserver centos
+      when: ansible_os_family == "RedHat"
+      package:
+        name: httpd
+        state: absent
+
+    - name: Delete all packages
+      package:
+        name: "{{ item }}"
+        state: absent
+      with_items:
+        - mysql
+        - mariadb-server
+        - php
+        - php-mysql
+        - php-pdo
